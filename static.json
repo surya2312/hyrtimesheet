@@ -1,0 +1,13 @@
+{
+  "root": "dist/",
+  "encoding": "US-ASCII",
+  "clean_urls": true,
+  "headers": {
+    "/**": {
+      "Access-Control-Allow-Origin": "*"
+    }
+  },
+  "routes": {
+    "/**": "index.html"
+  }
+}

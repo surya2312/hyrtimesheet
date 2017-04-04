@@ -1,0 +1,66 @@
+.container-div{
+    background-color: #efefef;
+    padding:2%;
+    margin-top:2%;
+    margin-left:2%;
+    margin-right:2%;
+}
+ .nav-border{
+    border-style: outset;
+ }
+
+ .nav-item{
+     font-size: 18px;
+ }
+
+ .my-date-picker {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.load-cells {
+    width: 100%;
+    background-color: #428bca;;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+table { border-collapse: collapse; }
+tr { display: block; float: left; }
+th, td { display: block;}
+
+.comment-box{
+    margin-top: 5px;
+}
+
+.load-button{
+        height: 46px;
+        margin-top: 10px;
+}
+
+.user-component{
+    padding-bottom:15px;
+}
+
+.form-signin-heading,
+{
+	  margin-bottom: 0px;
+	}
+
+    .login-div{
+    background-color:#eee !important;
+    padding-top: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 2%;
+    }
+
