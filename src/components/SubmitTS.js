@@ -45,8 +45,10 @@ class SubmitTS extends Component {
       var now = startDate.clone(), dates = [];
       var i=1;
       while (now.isBefore(endDate) || now.isSame(endDate)) {
+        
             dates.push({  date:now.format('MM/DD/YY'),
-                          day:now.day(),
+                          day:now.format('dddd'),
+                          week:now.week(),
                           hours:'0',
                           id:i});
             now.add('days', 1);
@@ -56,7 +58,7 @@ class SubmitTS extends Component {
   };
 
   submitData(){
-    console.log(this.props.selectedDates);
+    this.props.submitTimesheets(this.props.selectedDates);
   }
 
   updateHours(id, e){
@@ -94,8 +96,10 @@ class SubmitTS extends Component {
     if(this.props.selectedDates){
       this.selectedDates = this.props.selectedDates.map(selectedDate =>{
         return(
-          <tr>
-            <td>{selectedDate.date}</td>
+          <tr key={selectedDate.date}>
+            <td>
+              {selectedDate.date}<br/>{selectedDate.day}
+            </td>
             <td>
                <input type="text"  size="4"
                defaultValue={selectedDate.hours} onChange={this.updateHours.bind(this, selectedDate.id)} />
@@ -136,17 +140,21 @@ class SubmitTS extends Component {
           {this.selectedDates.length > 0 &&
             <div>
               <Table hover>
+                <tbody>
                 <tr>
-                  <th>Date</th>
+                  <th><br/>Date</th>
                   <th>#Hours</th>
                 </tr>
                 {this.selectedDates}
                 <tr >
                   <td colSpan="2">
+                      <span>Comments</span>
                       <Input type="textarea" className="comment-box" rows="3" name="comments" id="comments" />
                   </td> 
                 </tr>
+                </tbody>
               </Table>
+
               <Button color="primary" onClick={this.submitData.bind(this)}>Submit</Button>
             </div>
           }

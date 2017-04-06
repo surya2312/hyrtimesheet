@@ -7,7 +7,8 @@ import Login from './Login'
 import TimeSheets from './TimeSheets';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import moment from 'moment';
-import Admin from './Admin'
+import Admin from './Admin';
+import Request from 'superagent';
 
 class App extends Component {
  
@@ -18,57 +19,37 @@ constructor(){
     selectedDates: [],
     userName:'',
     showRoleOptions: false,
-    userRole:'user'
+    userRole:'user',
+    userId: ''
   }
 }
 
-getTimeSheets(){
-  this.state = {
-    timeSheets: [
-      {
-        id: uuid.v4(),
-        startDate:'02/27/2017',
-        endDate: '03/03/2017',
-        hours:40,
-        status:'Approved'
-      },
-      {
-        id: uuid.v4(),
-        startDate:'03/06/2017',
-        endDate: '03/10/2017',
-        hours:40,
-        status:'Pending'
-      },
-      {
-        id: uuid.v4(),
-        startDate:'03/13/2017',
-        endDate: '03/17/2017',
-        hours:40,
-        status:'Submitted'
-      }
-    ]
-  }
-};
-
 componentWillMount(){
-  this.getTimeSheets();
+  
 }
 
 componentDidMount(){
 
 }
 
-handleAddTimeSheet(timeSheet){
-  let timeSheets = this.state.timeSheets;
-  timeSheets.push(timeSheet);
-  this.setState({timeSheets:timeSheets});
-}
 
-handleDeleteTimeSheet(id){
-  let timeSheets = this.state.timeSheets;
-  let index = timeSheets.findIndex(x => x.id === id);
-  timeSheets.splice(index,1);
-  this.setState({timeSheets: timeSheets});
+handleAddTimesheets(data){
+  console.log(this.state.userId);
+  console.log(data);
+  var req ={
+    "userId":this.state.userId,
+    "timesheets":data
+  }
+    Request
+      .put('http://localhost:3000/api/updateTimesheets')
+      .set('Content-Type', 'application/json')
+      .send(req)
+       .end((error, res) => {
+                res ? 
+                console.log(res) : 
+                console.log('there is error');
+      });
+      
 }
 
 loadCells(dates){
@@ -81,6 +62,7 @@ handleLogin(user){
     this.setState({userName: user.firstName+' '+user.lastName});
     this.setState({showRoleOptions: true});
     this.setState({userRole: user.role});
+    this.setState({userId: user._id});
   
 }
 
@@ -93,7 +75,7 @@ handleLogout(){
 render() {
     let mainScreen  = this.state.showRoleOptions ? 
                               (this.state.userRole === 'user' ? 
-                      <SubmitTS addTimeSheet={this.handleAddTimeSheet.bind(this)}
+                      <SubmitTS submitTimesheets={this.handleAddTimesheets.bind(this)}
                         addCells={this.loadCells.bind(this)}
                         selectedDates={this.state.selectedDates}/> :<Admin/> ): 
                       <Login loginSuccess={this.handleLogin.bind(this)}/>;
@@ -109,9 +91,3 @@ render() {
 }
 
 export default App;
-
-///<TimeSheets timeSheets={this.state.timeSheets} onDelete={this.handleDeleteTimeSheet.bind(this)}/>
-
-/*<SubmitTS addTimeSheet={this.handleAddTimeSheet.bind(this)}
-                  addCells={this.loadCells.bind(this)}
-                  selectedDates={this.state.selectedDates}/> */
