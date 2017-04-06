@@ -10,6 +10,10 @@ constructor(){
   }
 }
 
+logout(){
+   this.props.logout();  
+}
+
 render() {
     
     return (
@@ -28,7 +32,7 @@ render() {
                 <NavLink href="#">Settings</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#">Logout</NavLink>
+                <NavLink onClick={this.logout.bind(this)}>Logout</NavLink>
               </NavItem>
             </Nav>
             }

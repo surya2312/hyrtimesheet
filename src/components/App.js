@@ -77,12 +77,19 @@ loadCells(dates){
 }
 
 handleLogin(user){
-  console.log(user);
+    console.log(user);
     this.setState({userName: user.firstName+' '+user.lastName});
     this.setState({showRoleOptions: true});
     this.setState({userRole: user.role});
-    console.log(this.state.userRole);
+  
 }
+
+handleLogout(){
+    this.setState({userName: ''});
+    this.setState({showRoleOptions: false});
+    this.setState({userRole: 'user'});
+}
+
 render() {
     let mainScreen  = this.state.showRoleOptions ? 
                               (this.state.userRole === 'user' ? 
@@ -92,7 +99,9 @@ render() {
                       <Login loginSuccess={this.handleLogin.bind(this)}/>;
     return (
       <div className="App">
-        <NavBar userName={this.state.userName} showRoleOptions={this.state.showRoleOptions} /><br/>
+        <NavBar userName={this.state.userName} 
+                showRoleOptions={this.state.showRoleOptions} 
+                logout={this.handleLogout.bind(this)}/><br/>
         {mainScreen}
       </div>
     );
