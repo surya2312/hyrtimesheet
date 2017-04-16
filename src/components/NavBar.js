@@ -6,7 +6,6 @@ class NavBar extends Component {
 constructor(){
   super();
   this.state = {
-   
   }
 }
 
@@ -23,10 +22,10 @@ render() {
           <NavbarToggler right onClick={this.toggle} />
           <NavbarBrand href="/">
             <img src="https://files.slack.com/files-pri/T2JBNBZ1Q-F4MQM9YQM/hyr-full-name.png" height="50" />
-            {this.props.userName}
+            {this.props.userInfo.firstName} {this.props.userInfo.lastName}
           </NavbarBrand>
           <Collapse isOpen={this.state.isOpen} navbar>
-            {this.props.showRoleOptions &&
+            {this.props.userInfo.role &&
             <Nav className="ml-auto" navbar>
               <NavItem>
                 <NavLink href="#">Settings</NavLink>

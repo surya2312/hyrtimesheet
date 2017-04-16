@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SubmitTS from './SubmitTS';
+import User from './User';
 import NavBar from './NavBar';
 import uuid from 'uuid';
 import './App.css';
@@ -15,74 +15,50 @@ class App extends Component {
 constructor(){
   super();
   this.state = {
-    timeSheets: [],
-    selectedDates: [],
-    userName:'',
-    showRoleOptions: false,
-    userRole:'user',
-    userId: ''
+    selectedDates: [],  
+    userInfo:{}
   }
-}
-
-componentWillMount(){
-  
-}
-
-componentDidMount(){
-
 }
 
 
 handleAddTimesheets(data){
-  console.log(this.state.userId);
-  console.log(data);
   var req ={
-    "userId":this.state.userId,
+    "userId":this.state.userInfo._id,
     "timesheets":data
   }
-    Request
-      .put('http://localhost:3000/api/updateTimesheets')
-      .set('Content-Type', 'application/json')
-      .send(req)
-       .end((error, res) => {
-                res ? 
-                console.log(res) : 
-                console.log('there is error');
-      });
-      
+  Request
+    .put('http://localhost:3000/api/updateTimesheets')
+    .set('Content-Type', 'application/json')
+    .send(req)
+    .end((error, res) => {
+      res ? 
+        console.log(res) : 
+        console.log('there is error');
+  });    
 }
 
 loadCells(dates){
-  console.log(dates);
   this.setState({selectedDates:dates});
 }
 
 handleLogin(user){
-    console.log(user);
-    this.setState({userName: user.firstName+' '+user.lastName});
-    this.setState({showRoleOptions: true});
-    this.setState({userRole: user.role});
-    this.setState({userId: user._id});
-  
+  this.setState({userInfo:user});
 }
 
 handleLogout(){
-    this.setState({userName: ''});
-    this.setState({showRoleOptions: false});
-    this.setState({userRole: 'user'});
+  this.setState({userInfo:''});
 }
 
 render() {
-    let mainScreen  = this.state.showRoleOptions ? 
-                              (this.state.userRole === 'user' ? 
-                      <SubmitTS submitTimesheets={this.handleAddTimesheets.bind(this)}
+    let mainScreen  = this.state.userInfo.role ? 
+                              (this.state.userInfo.role === 'user' ? 
+                      <User userInfo={this.state.userInfo} submitTimesheets={this.handleAddTimesheets.bind(this)}
                         addCells={this.loadCells.bind(this)}
                         selectedDates={this.state.selectedDates}/> :<Admin/> ): 
                       <Login loginSuccess={this.handleLogin.bind(this)}/>;
     return (
       <div className="App">
-        <NavBar userName={this.state.userName} 
-                showRoleOptions={this.state.showRoleOptions} 
+        <NavBar userInfo={this.state.userInfo}              
                 logout={this.handleLogout.bind(this)}/><br/>
         {mainScreen}
       </div>
